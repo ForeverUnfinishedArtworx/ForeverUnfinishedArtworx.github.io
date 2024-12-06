@@ -9,7 +9,9 @@ Website: http://gettemplates.co/
 Twitter: http://twitter.com/gettemplatesco
 Facebook: http://facebook.com/gettemplatesco
 
-
+REIMAGINED by TheArtistNine at ForeverUnfinishedArtworx
+Website: http://ForeverUnfinishedArtworx.github.io
+Instagram: http://instagram.com/foreverunfinishedartworx
 CREDITS:
 
 Bootstrap
