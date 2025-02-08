@@ -9,5 +9,11 @@
         "plaintext": true,
         "markdown": true,
         "scminput": true
-    }
+    },
+    "workbench.activityBar.location": "top",
+    "workbench.iconTheme": "vs-minimal",
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 19,
+    "editor.cursorStyle": "block-outline",
+    "editor.cursorSmoothCaretAnimation": "on"
 }
