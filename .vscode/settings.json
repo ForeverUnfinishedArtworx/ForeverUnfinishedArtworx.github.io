@@ -1,5 +1,5 @@
 {
-    "liveServer.settings.port": 5501,
+    "liveServer.settings.port": 5502,
     "cSpell.words": [
         "backface",
         "codrops",
@@ -15,5 +15,7 @@
     "files.autoSave": "afterDelay",
     "editor.fontSize": 19,
     "editor.cursorStyle": "block-outline",
-    "editor.cursorSmoothCaretAnimation": "on"
+    "editor.cursorSmoothCaretAnimation": "on",
+    "IDX.aI.enableInlineCompletion": true,
+    "IDX.aI.enableCodebaseIndexing": true
 }
