@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BombtheWalls</title>
+  <link rel="stylesheet" href="assets/css/draw.css">
+</head>
+<body>
+  <div class="canvas-container">
+    <canvas id="myCanvas"></canvas>
+  </div>
+  <div class="tool-bar">
+    <button id="clearButton">Clear</button>
+    <label for="symmetryCheckbox">Enable Symmetry</label>
+    <input type="checkbox" id="symmetryCheckbox">
+    <label for="mirrorPoints">Number of mirror points</label>
+    <input type="number" id="mirrorPoints" value="1" min="1" max="99">
+    <label for="brushSelect">Brush Type</label>
+    <select id="brushSelect">
+      <option value="1">ExtraFine</option>
+      <option value="3">Fine</option>
+      <option value="5" selected>Medium</option>
+      <option value="9">Thick</option>
+      <option value="13">FatCap</option>
+      <option value="splatter">Splatter</option>
+    </select>
+    <label for="colorPicker">Color</label>
+    <input type="color" id="colorPicker" value="#D71E09">
+    <button id="downloadButton">Download</button>
+    <button id="eraserButton">Eraser</button>
+  </div>
+  <form id="drawingForm">
+    <input type="hidden" id="imageData" name="imageData">
+    <button type="submit">Submit drawing</button>
+  </form>
+  <div id="images"></div>
+  <script src="assets/js/draw.js"></script>
+
+</body>
+</html>
+<!-- // Canvas Setup
+     const canvas = document.getElementById('myCanvas');
+     const ctx = canvas.getContext('2d');
+     const canvasContainer = document.querySelector('.canvas-container');
+     let canvasWidth = 1000;
+     let canvasHeight = 400; //changed the default height
+     const originalAspectRatio = canvasWidth / canvasHeight;
+     let centerX = canvasWidth / 2;
+     let centerY = canvasHeight / 2;
+     let isDrawing = false;
+     let lastX = 0;
+     let lastY = 0;
+     let isSymmetric = false;
+     let selectedColor = '#D71E09'; // Default color is now red
+     let selectedLineWidth = 5; //changed the default line width
+     let mirrorPoints = 1;
+     let selectedBrushType = "Medium"; // Added a variable to keep track of the selected brush type
+     let isErasing = false;
+     let eraserWidth = 20;
+     let mainImage = "apple";
+     let isDrawingImage = false;
+     let imageX = 0;
+     let imageY = 0;
+     let imageWidth = 0;
+     let imageHeight = 0;
+     let initialImageWidth = 0;
+     let initialImageHeight = 0;
+     
+     // Function to update the canvas size
+     function updateCanvasSize() {
+       const containerWidth = canvasContainer.offsetWidth;
+       const newCanvasWidth = containerWidth;
+       const newCanvasHeight = newCanvasWidth / originalAspectRatio;
+       canvas.width = newCanvasWidth;
+       canvas.height = newCanvasHeight;
+       canvasWidth = newCanvasWidth;
+       canvasHeight = newCanvasHeight;
+       // Update the center after the size is updated
+       centerX = canvasWidth / 2;
+       centerY = canvasHeight / 2;
+       // Redraw everything
+       applyDrawingStyles();
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+     }
+     
+     // Call the function on load and on resize
+     window.addEventListener('load', updateCanvasSize);
+     window.addEventListener('resize', updateCanvasSize);
+
+
+// Function to update the canvas size
+function updateCanvasSize() {
+  const containerWidth = canvasContainer.offsetWidth;
+  const newCanvasWidth = containerWidth;
+  const newCanvasHeight = newCanvasWidth / originalAspectRatio;
+  canvas.width = newCanvasWidth;
+  canvas.height = newCanvasHeight;
+  canvasWidth = newCanvasWidth;
+  canvasHeight = newCanvasHeight;
+  // Update the center after the size is updated
+  centerX = canvasWidth / 2;
+  centerY = canvasHeight / 2;
+  // Redraw everything
+  applyDrawingStyles();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Call the function on load and on resize
+window.addEventListener('load', updateCanvasSize);
+window.addEventListener('resize', updateCanvasSize);
+
+// Apply changes to the canvas context
+function applyDrawingStyles() {
+  ctx.strokeStyle = selectedColor;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = selectedLineWidth;
+}
+// Function to draw splatter
+function drawSplatter(x, y) {
+  const splatterRadius = selectedLineWidth * 2;
+  const numPoints = 20;
+  for (let i = 0; i < numPoints; i++) {
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * splatterRadius;
+    const splatterX = x + radius * Math.cos(angle);
+    const splatterY = y + radius * Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(splatterX, splatterY, 1, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+ctx.globalCompositeOperation = 'source-over';
+
+
+
+
