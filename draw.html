@@ -57,7 +57,8 @@
  </script>
  
  <script>
-     const imageBrushSize = 200;
+     const imageBrushSize = 300;
+    const imageBrushSpacing = 100;
      // Canvas Setup
      const canvas = document.getElementById('myCanvas');
      const ctx = canvas.getContext('2d');
@@ -74,6 +75,8 @@
      let mirrorPoints = 9;//changed default to 9 mirror points
      let selectedBrushType = "line"; // Added a variable to keep track of the selected brush type
       let centerX = canvasWidth / 2;
+      let lastImageX=0;
+      let lastImageY=0;
      let centerY = canvasHeight / 2;    
  
      // Function to update the canvas size
@@ -217,16 +220,23 @@
          canvas.addEventListener('mousemove', (e) => {
               if (!isDrawing) return;//if not drawing don't draw
               if(brushImages[selectedBrushType]){
+                  const currentX = e.offsetX;
+                  const currentY = e.offsetY;
+                   const distanceMoved = Math.sqrt(
+                       Math.pow(currentX - lastImageX, 2) + Math.pow(currentY - lastImageY, 2)
+                   );
+                  if(distanceMoved>=imageBrushSpacing){
+                       const img = new Image();
+                       img.src = brushImages[selectedBrushType];
+                       img.onload = () => {
+                           drawImageBrush(e.offsetX,e.offsetY, img); 
+                           if (isSymmetric) {
+                               drawSymmetricImage(e,img);
+                           }
+                           [lastImageX, lastImageY] = [e.offsetX, e.offsetY];
+                       }
+                     }                     
                  
-                 const img = new Image();
-                 img.src = brushImages[selectedBrushType];
-                 img.onload = () => {
-                     drawImageBrush(e.offsetX,e.offsetY, img); 
-                     if (isSymmetric) {
-                         drawSymmetricImage(e,img);
-                     }
-                     
-                 }
                  
                  
                  return;
