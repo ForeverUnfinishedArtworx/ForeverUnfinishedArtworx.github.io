@@ -9,6 +9,9 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            border: 5px solid white; /* White border around the canvas */
+
+
         }
     </style>
 </head>
@@ -23,22 +26,30 @@
         <input type="checkbox" id="symmetryCheckbox">
         <label for="mirrorPoints">Number of mirror points</label>
         <input type="number" id="mirrorPoints" value="1" min="1" max="99">
+
         <select id="brushSelect">
-            <option value="3">SuperSkinnyCap</option>
-            <option value="5" selected>SkinnyCap</option>
+            <option value="3">SuperSkinnyCap</option>            
+            <option value="5">SkinnyCap</option>
             <option value="9">FatCap</option>
             <option value="13">NewYorkCapFatCap</option>
             <option value="splatter">Splatters</option>
+            <option value="drips">Drips</option>
+
         </select>
-        <input type="color" id="colorPicker" value="#D71E09">
+        <input type="color" id="colorPicker" value="#FFFF00">
 
         </div>
         <button id="downloadButton">Download</button>
 
-    </div>
-    <form id="drawingForm">
-        <input type="hidden" id="imageData" name="imageData">
-        <button type="submit">Send it</button>
+
+    <form
+    action="https://formspree.io/f/mwplbjba"
+    method="POST"
+    enctype="multipart/form-data"
+    >
+    <label for="email">Your email:</label>
+    <input type="email" name="email" id="email" />
+    <button type="submit">SendIt</button>
     </form>
     <!-- Add formspree stuff here -->
     <script>
@@ -54,11 +65,11 @@
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
-        let isSymmetric = false;
-        let selectedColor = '#D71E09'; // Default color is now red
-        let selectedLineWidth = 5;//changed the default line width
-        let mirrorPoints = 1;
-        let selectedBrushType = "Medium"; // Added a variable to keep track of the selected brush type
+        let isSymmetric = true; //enable by default
+        let selectedColor = '#FFFF00'; // Default color is now bright yellow
+        let selectedLineWidth = 9;//changed the default line width to fatcap
+        let mirrorPoints = 9;//changed default to 9 mirror points
+        let selectedBrushType = "line"; // Added a variable to keep track of the selected brush type
 
         // Function to update the canvas size
         function updateCanvasSize() {
@@ -92,7 +103,7 @@
         // Function to draw splatter
         function drawSplatter(x, y) {
             const splatterRadius = selectedLineWidth*2;
-            const numPoints = 20; 
+            const numPoints = 20;
 
             for (let i = 0; i < numPoints; i++) {
                 const angle = Math.random() * 2 * Math.PI;
@@ -100,27 +111,69 @@
                 const splatterX = x + radius * Math.cos(angle);
                 const splatterY = y + radius * Math.sin(angle);
 
-                ctx.beginPath();
+                ctx.beginPath();            
                 ctx.arc(splatterX, splatterY, 1, 0, 2 * Math.PI); 
                 ctx.fill();
             }
         }
+        function drawDrip(x, y, length, angle) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        
+            // Calculate the end point of the drip based on length and angle
+            const endX = x + length * Math.cos(angle);
+            const endY = y + length * Math.sin(angle);
+        
+            // Quadratic Bézier curve control point
+            const controlX = (x + endX) / 2 + (length / 2) * Math.cos(angle + Math.PI / 2);
+            const controlY = (y + endY) / 2 + (length / 2) * Math.sin(angle + Math.PI / 2);
+            
+            ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+            ctx.stroke();
+        }
+        function drawDrips(x,y){
+             const numDrips = 3; // You can adjust the number of drips
+            const dripLength = selectedLineWidth * 4 ; // Adjust the length of the drips
+            const maxDripAngleVariation = Math.PI / 6; // Adjust the angle variation
+
+            for (let i = 0; i < numDrips; i++) {
+                const dripAngle = Math.PI / 2 + (Math.random() - 0.5) * maxDripAngleVariation;
+                const dripStartX = x + (Math.random() - 0.5) * selectedLineWidth; // Randomly vary the starting point of the drips
+                const dripStartY = y;
+                 // Change color for each drip
+                 ctx.strokeStyle = selectedColor;
+                 drawDrip(dripStartX, dripStartY, dripLength, dripAngle);
+               
+            }
+        }
+        
         // Symmetry Checkbox
         const symmetryCheckbox = document.getElementById('symmetryCheckbox');
         
         //Number of mirror points input
         const mirrorPointsInput = document.getElementById('mirrorPoints');
+        
         mirrorPointsInput.addEventListener('change', () => {
             mirrorPoints = parseInt(mirrorPointsInput.value);
+            mirrorPoints = mirrorPoints > 9 ? 9 : mirrorPoints; //limit the amount of mirror points to 9
+        });
+        
+        symmetryCheckbox.addEventListener('change', () => {
+            isSymmetric = symmetryCheckbox.checked;
         });
 
         // Brush Selector
         const brushSelect = document.getElementById('brushSelect');
         brushSelect.addEventListener('change', () => {
+            selectedBrushType = "line"
             if(brushSelect.value === "splatter"){
                 selectedBrushType = "splatter";
+            }else if(brushSelect.value === "drips"){
+                selectedBrushType = "drips";
+                
             }else{
                 selectedLineWidth = parseInt(brushSelect.value);
+                brushSelect.value = "9" //make the fatcap selected by default
                  selectedBrushType = "line";
             }
             applyDrawingStyles();
@@ -137,12 +190,13 @@
         canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
              [lastX, lastY] = [e.offsetX, e.offsetY];
-             applyDrawingStyles();
-             symmetryCheckbox.addEventListener('change', () => {
-                isSymmetric = symmetryCheckbox.checked;
-             });
              if (selectedBrushType === "splatter") {
                 ctx.fillStyle = selectedColor; // Set the fill style for the splatter
+             }else if(selectedBrushType ==="drips"){
+                ctx.strokeStyle = selectedColor;
+             }
+             if(isSymmetric){
+                 ctx.fillStyle = selectedColor;
              }
         });
 
@@ -154,7 +208,7 @@
                  if (isSymmetric) {
                     const angleIncrement = (2 * Math.PI) / mirrorPoints;
                     const dx = e.offsetX - centerX;
-                    const dy = e.offsetY - centerY;
+                    const dy = e.offsetY - centerY; 
                     const baseAngle = Math.atan2(dy, dx);
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     for (let i = 0; i < mirrorPoints; i++) {
@@ -162,8 +216,23 @@
                         const rotatedX = centerX + dist * Math.cos(rotatedAngle);
                         const rotatedY = centerY + dist * Math.sin(rotatedAngle);
                         drawSplatter(rotatedX, rotatedY);
-
+                       
                      }
+                }
+            }else if(selectedBrushType ==="drips"){
+                drawDrips(e.offsetX,e.offsetY)
+                if(isSymmetric){
+                    const angleIncrement = (2 * Math.PI) / mirrorPoints;
+                    const dx = e.offsetX - centerX;
+                    const dy = e.offsetY - centerY; 
+                    const baseAngle = Math.atan2(dy, dx);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    for (let i = 0; i < mirrorPoints; i++) {
+                        const rotatedAngle = baseAngle + i * angleIncrement;
+                        const rotatedX = centerX + dist * Math.cos(rotatedAngle);
+                        const rotatedY = centerY + dist * Math.sin(rotatedAngle);
+                        drawDrips(rotatedX,rotatedY)
+                    }
                 }
             }else{
                  if (isSymmetric) {
@@ -207,36 +276,22 @@
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         });
 
-        // Form Submission Logic
-        const form = document.getElementById('drawingForm');
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const imageData = canvas.toDataURL();
-            document.getElementById('imageData').value = imageData;
-            fetch('https://formspree.io/f/your_formspree_id', {
-                method: 'POST',
-                body: new FormData(form),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert("Drawing sent!");
-                } else {
-                    response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            alert(data["errors"].map(error => error["message"]).join(", "))
-                        } else {
-                            alert("Oops! There was a problem submitting your drawing")
-                        }
-                    })
-                }
-            })
-            .catch(error => {
-                alert("Oops! There was a problem submitting your drawing")
-            });
-        });
+        
+        mirrorPointsInput.value=9;//update the input field to 9
+        //update the variable
+        isSymmetric = true;//set the default value of isSymmetric to true
+        symmetryCheckbox.checked=true;//update the checkbox to be checked
+
+        //update the variables after full page load
+        window.addEventListener('load', function() {
+            mirrorPoints = parseInt(mirrorPointsInput.value);
+            isSymmetric = symmetryCheckbox.checked;
+             applyDrawingStyles();
+        })
+        brushSelect.value="9"
+        //make sure that the initial selectedBrushType is line when the page loads
+        selectedBrushType="line"
+        
     </script>
 </body>
 </html>

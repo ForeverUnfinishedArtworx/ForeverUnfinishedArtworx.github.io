@@ -10,13 +10,13 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let isSymmetric = false;
-let selectedColor = '#D71E09'; // Default color is now red
+let selectedColor = '#FFFF00'; // Default color is now bright yellow
 let selectedLineWidth = 5; //changed the default line width, this is the line width of the drawing tool
-let mirrorPoints = 1;
+let mirrorPoints = 9; // Starting mirrors set to 9
 let selectedBrushType = "Medium"; // Added a variable to keep track of the selected brush type
 let isErasing = false; //flag to know if we are in eraser mode
 let eraserWidth = 5;
-let mainImage = "apple";
+let mainImage = ""; // removed default image
 let isDrawingImage = false;
 let imageX = 0;
 let imageY = 0;
@@ -40,10 +40,13 @@ function updateCanvasSize() {
     // Redraw everything
     applyDrawingStyles();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //add a white border
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
 }
 
 // Call the function on load and on resize
-window.addEventListener('load', updateCanvasSize);
+window.addEventListener('load', updateCanvasSize);//
 window.addEventListener('resize', updateCanvasSize);
 function applyDrawingStyles() {
     ctx.lineWidth = selectedLineWidth;
@@ -116,4 +119,55 @@ document.getElementById('downloadButton').addEventListener('click', function () 
     link.download = 'my-drawing.png';
     link.href = canvas.toDataURL();
     link.click();
+});
+
+// Event listener for form submission
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get the user's email
+    const email = document.getElementById('userEmail').value;
+
+    // Get the canvas data as a Blob
+    canvas.toBlob(function(blob) {
+        // Create a FormData object
+        const formData = new FormData();
+        
+        // Append the email to the form data
+        formData.append('email', email);
+        
+        // Append the canvas data as a file to the form data
+        formData.append('image', blob, 'my-drawing.png');
+
+        // Send the data using fetch
+        fetch('https://formspree.io/f/mwplbjba', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Email sent successfully!');
+            } else {
+                alert('Error sending email.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        });
+    }, 'image/png'); // Specify the type of the image
+});
+
+//set the number of mirrors to 9
+const mirrorSelect = document.getElementById('mirrorSelect');
+for (let i = 1; i <= 12; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    mirrorSelect.appendChild(option);
+}
+
+mirrorSelect.value = 9;
+mirrorSelect.addEventListener('change', function () {
+    mirrorPoints = parseInt(this.value);
 });
