@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <header>
+      <div class="outer-nav outer-nav--return" id="navBar">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div class="page-title">
+          <h1>My Blog</h1>
+          
+      </div>
+    </header>
+    <div id="blog-categories">
+        <h2>Categories</h2>
+        <ul>
+            <li><a href="#">Nonfiction</a></li>
+            <li><a href="#">Fiction</a></li>
+            <li><a href="#">Poetry</a></li>
+            <li><a href="#">Random Ideas</a></li>
+            <li><a href="#">Gripes</a></li>
+        </ul>
+    </div>
+
+    <div id="blog-posts">
+        <div class="blog-post">
+            <h2>Blog Post Title</h2>
+            <p class="blog-post-category">Category: <a href="#">Nonfiction</a></p>
+            <p class="blog-post-date">Date: January 1, 2024</p>
+            <div class="blog-post-body">
+                <p>This is the body of the blog post. Add your content here.</p>
+            </div>
+        </div>
+        
+    </div>
+    <div id="blog-navigation">
+        <nav>
+          <a href="blog.html" >Previous</a>
+          <a href="blog-page-2.html">Next</a>
+        </nav>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+        /*
+        var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };\n        */
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://YOURWEBSITE.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+    </script>
+</body>
+</html>
