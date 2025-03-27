@@ -3,6 +3,8 @@
      <meta charset="UTF-8" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <title>BombIt</title>
+     <link rel="stylesheet" href="assets/css/draw.css">
+
      <style>
          /* Style to contain the canvas */
          #canvasContainer {
@@ -26,9 +28,11 @@
      <input type="number" id="mirrorPoints" value="9" min="1" max="99">
  
      <select id="brushSelect">
-         <option value="9">FatCap</option>
-         <option value="5">SkinnyCap</option>        
-         <option value="3">SuperSkinnyCap</option>        
+         <option value="9">NewYorkFatCap</option>
+         <option value="7">SuperFatCap</option>
+         <option value="5">FatCap</option>
+         <option value="3">SkinnyCap</option>        
+         <option value="1">SuperSkinnyCap</option>        
          <option value="splat1">splat1</option> 
          <option value="splat2">splat2</option>
          <option value="drip1">drip1</option>
@@ -36,12 +40,26 @@
          </select>
          <input type="color" id="colorPicker" value="#FFFF00">
  </div>
+ <div class="background-selector">
+    <label for="background-dropdown">Select Background:</label>
+    <select id="background-dropdown">
+        <option value="../images/your-background-image.svg">Background 1</option>
+        <option value="../images/your-background-image2.svg">Background 2</option>
+        <option value="../images/your-background-image3.svg">Background 3</option>
+        <option value="../images/your-background-image4.svg">Background 4</option>
+    </select>
+</div>
+
  
  
- <form action="https://formspree.io/f/mwplbjba" method="POST" enctype="multipart/form-data">
-     <label for="email">Your email:</label>
-     <input type="email" name="email" id="email" />
+ <form class="draw-form" action="https://formspree.io/f/mwplbjba" method="POST" enctype="multipart/form-data">
+    <div class="fs-field">
+        <label class="fs-label" for="email">Email</label>
+        <input class="fs-input" id="email" name="email" required />
+        <label class="fs-label" for="message">Message</label>
+        <textarea class="fs-textarea" id="message" name="message"></textarea>
      <button type="submit">SendIt</button>
+    </div>
  </form>
  
  <!-- Add formspree stuff here -->

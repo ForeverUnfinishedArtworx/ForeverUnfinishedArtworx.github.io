@@ -1,7 +1,6 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas
 .getContext('2d');
-const canvasContainer = document.querySelector('.canvas-container');
 let canvasWidth = 1000;
 let canvasHeight = 400;
 const originalAspectRatio = canvasWidth / canvasHeight;
@@ -154,3 +153,20 @@ addTouchListeners();
 window.addEventListener('resize', updateCanvasSize);
 
 updateCanvasSize();
+// Add Background Dropdown functionality
+var backgroundDropdown = document.getElementById('background-dropdown');
+
+backgroundDropdown.addEventListener('change', function () {
+    var selectedBackground = backgroundDropdown.value;
+    canvasContainer.style.backgroundImage = 'url("' + selectedBackground + '")';
+});
+// Add Background Dropdown functionality
+var backgroundDropdown = document.getElementById('background-dropdown');
+var canvasContainer = document.querySelector('#canvasContainer');
+//add the line below to set the default image.
+canvasContainer.style.backgroundImage = 'url("../images/your-background-image.svg")';
+
+backgroundDropdown.addEventListener('change', function () {
+    var selectedBackground = backgroundDropdown.value;
+    canvasContainer.style.backgroundImage = 'url("' + selectedBackground + '")';
+});
