@@ -1,8 +1,9 @@
 const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas
+.getContext('2d');
 const canvasContainer = document.querySelector('.canvas-container');
 let canvasWidth = 1000;
-let canvasHeight = 400; //changed the default height
+let canvasHeight = 400;
 const originalAspectRatio = canvasWidth / canvasHeight;
 let centerX = canvasWidth / 2;
 let centerY = canvasHeight / 2;
@@ -10,62 +11,70 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let isSymmetric = false;
-let selectedColor = '#FFFF00'; // Default color is now bright yellow
-let selectedLineWidth = 5; //changed the default line width, this is the line width of the drawing tool
 let mirrorPoints = 9; // Starting mirrors set to 9
+let selectedColor = 'black'; // Default color
+let selectedLineWidth = 5; // Default line width
 let selectedBrushType = "Medium"; // Added a variable to keep track of the selected brush type
 let isErasing = false; //flag to know if we are in eraser mode
-let eraserWidth = 5;
-let mainImage = ""; // removed default image
-let isDrawingImage = false;
-let imageX = 0;
-let imageY = 0;
-let imageWidth = 0;
-let imageHeight = 0;
-let initialImageWidth = 0;
-let initialImageHeight = 0;
+let eraserWidth = 20;//width of the eraser
 
-// Function to update the canvas size
 function updateCanvasSize() {
-    const containerWidth = canvasContainer.offsetWidth;
-    const newCanvasWidth = containerWidth;
-    const newCanvasHeight = newCanvasWidth / originalAspectRatio;
-    canvas.width = newCanvasWidth;
-    canvas.height = newCanvasHeight;
-    canvasWidth = newCanvasWidth;
-    canvasHeight = newCanvasHeight;
-    // Update the center after the size is updated
+    canvasWidth = canvasContainer.offsetWidth;
+    canvasHeight = canvasWidth / originalAspectRatio;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
     centerX = canvasWidth / 2;
     centerY = canvasHeight / 2;
-    // Redraw everything
-    applyDrawingStyles();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //add a white border
-    ctx.strokeStyle = "white";
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = selectedColor; // Set the drawing color
+    ctx.lineWidth = selectedLineWidth; //set the line width
 }
 
-// Call the function on load and on resize
-window.addEventListener('load', updateCanvasSize);//
-window.addEventListener('resize', updateCanvasSize);
-function applyDrawingStyles() {
-    ctx.lineWidth = selectedLineWidth;
-    ctx.strokeStyle = selectedColor;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    //ctx.globalCompositeOperation = 'source-over'; // Default drawing mode
+function drawSymmetricLine(x1, y1, x2, y2, mirrorPoint) {
+    // ...code for drawing symetrical lines...
+    ctx.strokeStyle = selectedColor; // Set the drawing color
+    ctx.lineWidth = selectedLineWidth; //set the line width
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    if(isSymmetric){
+        const angle = (2 * Math.PI) / mirrorPoints;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const dx = x2 - centerX;
+        const dy = y2 - centerY;
+    
+        for (let i = 1; i < mirrorPoints; i++) {
+            const rotatedX = dx * Math.cos(angle * i) - dy * Math.sin(angle * i);
+            const rotatedY = dx * Math.sin(angle * i) + dy * Math.cos(angle * i);
+    
+            ctx.beginPath();
+            ctx.moveTo(centerX + rotatedX, centerY + rotatedY);
+            ctx.lineTo(centerX + rotatedX * (x2 - x1), centerY + rotatedY * (y2 - y1));
+            ctx.stroke();
+        }
+    }
 }
-function canvasTouched(event) {
-    //console.log("canvas touched");
-    isDrawing = true;
-    let rect = canvas.getBoundingClientRect();
-    lastX = event.clientX - rect.left;
-    lastY = event.clientY - rect.top;
+
+function clearCanvas() {
+    //code to clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-function canvasUntouched() {
-    //console.log("canvas untouched");
-    isDrawing = false;
+
+function changeToBrush(){
+    //code to change to brush mode
+    isErasing = false; //disable eraser
+    document.getElementById('eraser').classList.remove('active'); //set the button to inactive
+    document.getElementById('brush').classList.add('active'); //set the button to active
 }
+
+function changeToEraser(){
+    //code to change to eraser mode
+    isErasing = true; //enable eraser
+    document.getElementById('brush').classList.remove('active'); //set the button to inactive
+    document.getElementById('eraser').classList.add('active'); //set the button to active
+}
+
 function draw(event) {
     if (isDrawing) {
         ctx.beginPath();
@@ -76,98 +85,72 @@ function draw(event) {
         ctx.lineTo(currentX, currentY);
         if (isErasing) {
             ctx.globalCompositeOperation = 'destination-out'; // Set composite operation to erase
+            ctx.strokeStyle = `rgba(0,0,0,1
+)`; //make the eraser always black
+            ctx.lineWidth = eraserWidth;
+        } else {
+            ctx.globalCompositeOperation = 'source-over'; // Reset composite operation
+            ctx.strokeStyle = selectedColor; // Set the drawing color
+            ctx.lineWidth = selectedLineWidth; //set the line width
+        }
+        ctx.stroke();
+        drawSymmetricLine(lastX, lastY, currentX, currentY, mirrorPoints)
+        lastX = currentX;
+        lastY = currentY;
+    }
+    
+}
+
+function addTouchListeners() {
+    canvas.addEventListener('touchstart', (e) => {
+        isDrawing = true;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        lastX = touch.clientX - rect.left;
+        lastY = touch.clientY - rect.top;
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+        if (!isDrawing) return;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const currentX = touch.clientX - rect.left;
+        const currentY = touch.clientY - rect.top;
+        ctx.lineTo(currentX, currentY);
+        if (isErasing) {
+            ctx.globalCompositeOperation = 'destination-out'; // Set composite operation to erase
             ctx.strokeStyle = `rgba(0,0,0,1)`; //make the eraser always black
             ctx.lineWidth = eraserWidth;
         } else {
             ctx.globalCompositeOperation = 'source-over'; // Reset composite operation
-            applyDrawingStyles();
+            ctx.strokeStyle = selectedColor; // Set the drawing color
+            ctx.lineWidth = selectedLineWidth; //set the line width
         }
         ctx.stroke();
+        drawSymmetricLine(lastX, lastY, currentX, currentY, mirrorPoints);
         lastX = currentX;
         lastY = currentY;
-    }
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', () => {
+        isDrawing = false;
+    }, { passive: true });
 }
 
+canvas.addEventListener('mousedown', (event) => {
+    isDrawing = true;
+    [lastX, lastY] = [event.
+offsetX, event.offsetY];
+});
 
-// Add event listeners to handle drawing
-canvas.addEventListener('mousedown', canvasTouched);
 canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', canvasUntouched);
-canvas.addEventListener('mouseout', canvasUntouched);
-canvas.addEventListener('touchstart', canvasTouched);
-canvas.addEventListener('touchmove', draw);
-canvas.addEventListener('touchend', canvasUntouched);
 
-// Event listener for the eraser button
-document.getElementById('eraserButton').addEventListener('click', function () {
-    isErasing = !isErasing; // Toggle eraser mode
-    if (isErasing) {
-        this.style.backgroundColor = "red";
-    } else {
-        this.style.backgroundColor = "";
-    }
-});
+canvas.addEventListener('mouseup', () => isDrawing = false);
 
-// Event listener for eraser size changes
-document.getElementById('eraserSize').addEventListener('change', function () {
-    eraserWidth = parseInt(this.value); // Update eraser width
-});
+canvas.addEventListener('mouseout', () => isDrawing = false);
 
-// Event listener for download button
-document.getElementById('downloadButton').addEventListener('click', function () {
-    const link = document.createElement('a');
-    link.download = 'my-drawing.png';
-    link.href = canvas.toDataURL();
-    link.click();
-});
+addTouchListeners();
 
-// Event listener for form submission
-document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+window.addEventListener('resize', updateCanvasSize);
 
-    // Get the user's email
-    const email = document.getElementById('userEmail').value;
-
-    // Get the canvas data as a Blob
-    canvas.toBlob(function(blob) {
-        // Create a FormData object
-        const formData = new FormData();
-        
-        // Append the email to the form data
-        formData.append('email', email);
-        
-        // Append the canvas data as a file to the form data
-        formData.append('image', blob, 'my-drawing.png');
-
-        // Send the data using fetch
-        fetch('https://formspree.io/f/mwplbjba', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Email sent successfully!');
-            } else {
-                alert('Error sending email.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred.');
-        });
-    }, 'image/png'); // Specify the type of the image
-});
-
-//set the number of mirrors to 9
-const mirrorSelect = document.getElementById('mirrorSelect');
-for (let i = 1; i <= 12; i++) {
-    const option = document.createElement('option');
-    option.value = i;
-    option.text = i;
-    mirrorSelect.appendChild(option);
-}
-
-mirrorSelect.value = 9;
-mirrorSelect.addEventListener('change', function () {
-    mirrorPoints = parseInt(this.value);
-});
+updateCanvasSize();
