@@ -1,184 +1,115 @@
-body {
-  margin: 0; /* Remove default body margins */
-  overflow: hidden;
-}
-/* General element styling */
-.block {
-    display: block;
-    width: 100%;
-}
-.inline_block {
-    display: inline-block;
-}
-.width_30 {
-    width: 30%;
-}
-.width_60 {
-    width: 60%;
-}
-.text_right {
-    text-align: right;
-}
-.v_align {
-    vertical-align: middle;
-}
-.pb10 {
-    padding-bottom: 10px;
-}
-.p0 {
-    padding: 0 !important;
-}
-
-/* Option list */
-.option_list {
-    -webkit-appearance: none; /* Hide default arrow in webkit browsers */
-    -moz-appearance: none; /* Hide default arrow in mozilla browsers */
-    appearance: none; /* Hide default arrow in most browsers */
-    padding: 5px 30px 5px 10px;
-    background-image: url("svg/dropdown_arrow.svg");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 10px;
-    background-color: #e6e6e6;
-
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-/* Settings container */
-#settingsContainer {
+@import url(form.css)
+.sidebar {
     position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-    z-index: 100;
-}
-/* Tab container styling */
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-/* Button styling */
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-/* Tab button hover effect */
-.tab button:hover {
-    background-color: #ddd;
-}
-/* Style for active tab */
-.tab button.active {
-    background-color: #ccc;
-}
-/* Styling for tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-/* Category header styling */
-.category_header {
-    padding: 10px 0px;
-    border-bottom: 1px solid #e6e6e6;
-}
-/* Settings styling */
-.settings {
-    display: block;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e6e6e6;
-}
-.svg_icon {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    padding-right: 5px;
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 4
-0px;
-    height: 20px;
-}
-/* Slider styling */
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-/* Slider itself */
-.slider {
-    position: absolute;
-    cursor: pointer;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 4px;
-    bottom: 3px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-input:checked + .slider {
-    background-color: #2196F3;
-}
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-input:checked + .slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-}
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-.slider.round:before {
-    border-radius: 50%;
+    height: 100%;
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure sidebar is above other elements */
 }
 
-/* Tool bar styling */
-.tool-bar {
-  position: fixed;
-  top: 70px; /* Adjust this value to control the spacing from the top */
-  left: 0;
-  width: 100%;
-  background-color: #f0f0f0;
-  padding: 10px;
-  z-index: 10;
-  display: flex;
-  flex-wrap: wrap;
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
 }
-.tool-bar button{
-    margin-right: 10px;
+
+.brush-size-buttons button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.brush-size-buttons button:hover {
+    background-color: #ccc;
+}
+
+.color-picker-buttons button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 2px;
+    display: inline-block;
+    transition: transform 0.1s; /* Add a transition for the hover effect */
+}
+
+.color-picker-buttons button:hover {
+    transform: scale(1.1); /* Increase size by 10% on hover */
+}
+
+/* Color options */
+.color-picker-buttons .black {
+    background-color: black;
+}
+
+.color-picker-buttons .red {
+    background-color: red;
+}
+
+.color-picker-buttons .green {
+    background-color: green;
+}
+
+.color-picker-buttons .blue {
+    background-color: blue;
+}
+
+.color-picker-buttons .yellow {
+    background-color: rgb(227, 227, 2);
+}
+
+.color-picker-buttons .white {
+    background-color: rgb(203, 203, 203);
+    border: 1px solid black; /* Add a border for better visibility */
+}
+
+.symmetry-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    
+}
+
+.mirror-incrementor{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.mirror-buttons{
+    display: flex;
+    flex-direction: row;
+}
+.mirror-buttons button{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.symmetry-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #eee;
     border-radius: 5px;
 }
-#eraserButton,
-#eraserSize,
-label[for="eraserSize"] {
-    display: none;
+
+.symmetry-switch label {
+    font-size: 16px;
+    font-weight: bold;
+}
+/*New code goes below this line*/
+#canvasContainer {
+    background-size: cover; /* or contain */
+    background-repeat: no-repeat; /* or repeat */
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
