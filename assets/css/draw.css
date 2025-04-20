@@ -155,3 +155,31 @@ button {
     padding: 10px 20px;
     font-size: 16px;
 }
+
+/* Ensure symmetry checkbox and label match the red color of other labels */
+#symmetryCheckbox, label[for="symmetryCheckbox"] {
+    color: red; /* Match the red color of the email and message field labels */
+    display: inline-block; /* Ensure proper layout */
+}
+
+@media (prefers-color-scheme: dark) {
+    #symmetryCheckbox, label[for="symmetryCheckbox"] {
+        color: red; /* Keep red color consistent in dark mode */
+    }
+}
+
+/* Ensure symmetry checkbox is not covered */
+#symmetryCheckbox {
+    position: relative; /* Ensure it stays in its intended position */
+    z-index: 1; /* Bring it above overlapping elements */
+    width: 16px; /* Explicit width for visibility */
+    height: 16px; /* Explicit height for visibility */
+    background-color: rgb(255, 0, 0); /* Ensure a visible background */
+    border: 1px solid var(--color-border-default, #07e6d0); /* Match the border color */
+    appearance: checkbox; /* Ensure it renders as a checkbox */
+}
+
+label[for="symmetryCheckbox"] {
+    position: relative; /* Ensure label stays aligned with the checkbox */
+    z-index: 1; /* Match the checkbox's z-index */
+}
