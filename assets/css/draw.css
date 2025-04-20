@@ -107,9 +107,51 @@
 }
 /*New code goes below this line*/
 #canvasContainer {
-    background-size: cover; /* or contain */
-    background-repeat: no-repeat; /* or repeat */
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive adjustments for controls */
+div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.background-selector {
+    margin-top: 10px;
+    text-align: center;
+}
+
+form.draw-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.fs-field {
+    width: 90%;
+    max-width: 400px;
+}
+
+.fs-input, .fs-textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
 }
