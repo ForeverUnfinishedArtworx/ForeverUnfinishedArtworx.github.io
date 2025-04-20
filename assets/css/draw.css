@@ -118,6 +118,8 @@
 canvas {
     max-width: 100%;
     height: auto;
+    width: 100%;
+    touch-action: none; /* Prevent default touch gestures like scrolling */
 }
 
 /* Responsive adjustments for controls */
@@ -182,4 +184,24 @@ button {
 label[for="symmetryCheckbox"] {
     position: relative; /* Ensure label stays aligned with the checkbox */
     z-index: 1; /* Match the checkbox's z-index */
+}
+
+/* Add responsive styles for mobile */
+@media (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .toolbar button {
+        margin: 5px;
+        font-size: 14px;
+    }
 }

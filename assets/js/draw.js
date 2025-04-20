@@ -1,6 +1,5 @@
 const canvas = document.getElementById('myCanvas');
-const ctx = canvas
-.getContext('2d');
+const ctx = canvas.getContext('2d');
 let canvasWidth = 1000;
 let canvasHeight = 400;
 const originalAspectRatio = canvasWidth / canvasHeight;
@@ -84,8 +83,7 @@ function draw(event) {
         ctx.lineTo(currentX, currentY);
         if (isErasing) {
             ctx.globalCompositeOperation = 'destination-out'; // Set composite operation to erase
-            ctx.strokeStyle = `rgba(0,0,0,1
-)`; //make the eraser always black
+            ctx.strokeStyle = `rgba(0,0,0,1)`; //make the eraser always black
             ctx.lineWidth = eraserWidth;
         } else {
             ctx.globalCompositeOperation = 'source-over'; // Reset composite operation
@@ -102,19 +100,23 @@ function draw(event) {
 
 function addTouchListeners() {
     canvas.addEventListener('touchstart', (e) => {
-        isDrawing = true;
+        e.preventDefault();
         const touch = e.touches[0];
+        isDrawing = true;
         const rect = canvas.getBoundingClientRect();
         lastX = touch.clientX - rect.left;
         lastY = touch.clientY - rect.top;
     }, { passive: true });
 
     canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
         if (!isDrawing) return;
         const touch = e.touches[0];
         const rect = canvas.getBoundingClientRect();
         const currentX = touch.clientX - rect.left;
         const currentY = touch.clientY - rect.top;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
         ctx.lineTo(currentX, currentY);
         if (isErasing) {
             ctx.globalCompositeOperation = 'destination-out'; // Set composite operation to erase
@@ -138,8 +140,7 @@ function addTouchListeners() {
 
 canvas.addEventListener('mousedown', (event) => {
     isDrawing = true;
-    [lastX, lastY] = [event.
-offsetX, event.offsetY];
+    [lastX, lastY] = [event.offsetX, event.offsetY];
 });
 
 canvas.addEventListener('mousemove', draw);
