@@ -28,7 +28,7 @@
             <option value="drip1">drip1</option>
             <option value="drip2">drip2</option>
         </select>
-        <input type="color" id="colorPicker" value="#FFFF00">
+        <input type="color" id="colorPicker" value="#000000">
     </div>
     <div class="background-selector">
         <label for="background-dropdown">Select Background:</label>
@@ -73,7 +73,7 @@
         let lastX = 0;
         let lastY = 0;
         let isSymmetric = true; //enable by default
-        let selectedColor = '#FFFF00'; // Default color is now bright yellow
+        let selectedColor = '#000000'; // Default color is now black
         let selectedLineWidth = 9;//changed the default line width to fatcap
         let mirrorPoints = 9;//changed default to 9 mirror points
         let selectedBrushType = "line"; // Added a variable to keep track of the selected brush type
@@ -198,6 +198,7 @@
 
                 ctx.beginPath();            
                 ctx.arc(splatterX, splatterY, 1, 0, 2 * Math.PI);
+                ctx.fillStyle = selectedColor; // Use the selected color
                 ctx.fill();
             }
         }
@@ -214,6 +215,7 @@
             const controlY = (y + endY) / 2 + (length / 2) * Math.sin(angle + Math.PI / 2);
             
             ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+            ctx.strokeStyle = selectedColor; // Use the selected color
             ctx.stroke();
         }
         function drawDrips(x,y){
