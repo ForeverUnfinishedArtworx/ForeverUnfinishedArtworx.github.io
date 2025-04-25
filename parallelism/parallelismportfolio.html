@@ -64,7 +64,7 @@
 								</article>
 
 								<article class="item thumb span-2">
-									<h2>The Spectators</h2>
+									<h2>Astro Man</h2>
 									<a href="images/fulls/08.jpg" class="image"><img src="images/thumbs/08.jpg" alt=""></a>
 								</article>
 
@@ -73,26 +73,99 @@
 						<!-- Items -->
 							<div class="items">
 
-								<article class="item thumb span-3"><h2>Kingdom of the Wind</h2><a href="images/fulls/05.jpg" class="image"><img src="images/thumbs/05.jpg" alt=""></a></article>
-								<article class="item thumb span-1"><h2>The Pursuit</h2><a href="images/fulls/06.jpg" class="image"><img src="images/thumbs/06.jpg" alt=""></a></article>
-								<article class="item thumb span-2"><h2>Boundless</h2><a href="images/fulls/07.jpg" class="image"><img src="images/thumbs/07.jpg" alt=""></a></article>
-								<article class="item thumb span-2"><h2>The Spectators</h2><a href="images/fulls/08.jpg" class="image"><img src="images/thumbs/08.jpg" alt=""></a></article>
-								<article class="item thumb span-1"><h2>You really got me</h2><a href="images/fulls/01.jpg" class="image"><img src="images/thumbs/01.jpg" alt=""></a></article>
-								<article class="item thumb span-2"><h2>Ad Infinitum</h2><a href="images/fulls/02.jpg" class="image"><img src="images/thumbs/02.jpg" alt=""></a></article>
-								<article class="item thumb span-1"><h2>Different.</h2><a href="images/fulls/03.jpg" class="image"><img src="images/thumbs/03.jpg" alt=""></a></article>
-								<article class="item thumb span-2"><h2>Kingdom of the Wind</h2><a href="images/fulls/05.jpg" class="image"><img src="images/thumbs/05.jpg" alt=""></a></article>
+								<article class="item thumb span-3"><h2>Primo Tag</h2><a href="images/fulls/05.jpg" class="image"><img src="images/thumbs/05.jpg" alt=""></a></article>
+								<article class="item thumb span-1"><h2>The Palette</h2><a href="images/fulls/06.jpg" class="image"><img src="images/thumbs/06.jpg" alt=""></a></article>
+								<article class="item thumb span-2"><h2>Save our Ship</h2><a href="images/fulls/07.jpg" class="image"><img src="images/thumbs/07.jpg" alt=""></a></article>
+								<article class="item thumb span-2"><h2>Astro Man</h2><a href="images/fulls/08.jpg" class="image"><img src="images/thumbs/08.jpg" alt=""></a></article>
+								<article class="item thumb span-1"><h2>Synthwave Sunrise</h2><a href="images/fulls/01.jpg" class="image"><img src="images/thumbs/01.jpg" alt=""></a></article>
+								<article class="item thumb span-2"><h2>Dualitas</h2><a href="images/fulls/02.jpg" class="image"><img src="images/thumbs/02.jpg" alt=""></a></article>
+								<article class="item thumb span-1"><h2>Sacred Moon</h2><a href="images/fulls/03.jpg" class="image"><img src="images/thumbs/03.jpg" alt=""></a></article>
+								<article class="item thumb span-2"><h2>Primo</h2><a href="images/fulls/05.jpg" class="image"><img src="images/thumbs/05.jpg" alt=""></a></article>
 								<article class="item thumb span-1"><h2>Elysium</h2><a href="images/fulls/04.jpg" class="image"><img src="images/thumbs/04.jpg" alt=""></a></article>
 
 							</div>
 
+					</section>
+					<section>
+					 <style>
+					  body {
+						font-family: 'Brush Script MT', cursive;
+					  }
+					  
+					  .overlay {
+						height: 100%;
+						width: 0;
+						position: fixed;
+						z-index: 1;
+						top: 0;
+						left: 0;
+						background-color: rgb(1, 155, 152);
+						overflow-x: hidden;
+						transition: 0.99s;
+						display: flex;
+						flex-direction: column;
+						justify-content: flex-start;
+						align-items: center;
+					  }
+					  
+					  .overlay .closebtn {
+						position: sticky;
+						top: 20px;
+						left: 40px;
+						font-size: 40px;
+						color: rgb(255, 0, 0);
+						cursor: crosshair;
+						z-index: 1000;
+					  }
+
+					  .overlay-content {
+						margin-top: 100px; /* Ensure content is below the close button */
+						text-align: center;
+						color: rgba(6, 254, 237, 0.928);
+						font-size: 33px;
+						line-height: 1.6;
+						max-width: 80%;
+					  }
+					  
+					  @media screen and (max-height: 450px) {
+						.overlay a {font-size: 20px}
+						.overlay .closebtn {
+						font-size: 40px;
+						top: 15px;
+						right: 35px;
+						}
+					  }
+					 </style>
+				
+					  <body>
+					  
+					  <div id="myNav" class="overlay">
+						<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&dagger;&Dagger;&dagger;	</a>
+						<div class="overlay-content">
+						  <a href="#"><p>Forever unfinished Artworx is a dynamic and forward-thinking art enterprise that combines creativity with technology. Our objective, led by Remington Braninburg, a passionate artist and entrepreneur, is to create exclusive, high-quality work that excites and captivates audiences. We sell exceptional original art prints, t-shirts, stickers, and other imaginative undertakings online demonstrating our distinct style. Our art reflects our passion for urban street art and graffiti, as well as our roots in the 80s & 90s scene, and we are steadfast in pushing the limits of what is possible. Hand-painted modern contemporary and digital abstraction bring cyberpunk futures into your world. &Dagger;A paradigm Shifting polymath. Stationary Timewalker. Scientific magic wielder. A perfect imperfection. &Dagger; <br>Bi-Polar and ADD is my super power. Just a question of which one of me is for the hour? Father, Fighter, Artist/, Poet, Convict, Addict? Whiskey neat or a whiskey sour?</a>
+						</div>
+					  </div>
+					
+					  <span style="font-size:30px;cursor:pointer" onclick="openNav()"><i class="fa-solid fa-user-ninja fa-2xl"></i></span>
+					  
+					  <script>
+					  function openNav() {
+						document.getElementById("myNav").style.width = "100%";
+					  }
+					  
+					  function closeNav() {
+						document.getElementById("myNav").style.width = "0%";
+					  }
+					  </script>
+						   
+					  </body>
 					</section>
 
 				<!-- Footer -->
 					<section id="footer">
 						<section>
 							<p>Forever Unfinished Artworx create out of <strong>Faux Fox Foundry</strong><br>where neon and grit combine to create rebelion</p>
-							<p>This is <strong>ParallelismPortfolio</strong>, a responsive portfolio site by Nine. you may use this code for free for personal
-							and commercial use under the <a href="http://html5up.net/license">Creative Commons Attribution</a> license.</p>
+							
 						</section>
 						<section>
 							<ul class="icons">
@@ -103,8 +176,10 @@
 								<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 							</ul>
 							<ul class="copyright">
-								<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+								<li>&copy; FUAX/li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 							</ul>
+							<p>This is <strong>ParallelismPortfolio</strong>, a responsive portfolio site by Nine. you may use this code for free for personal
+								and commercial use under the <a href="http://html5up.net/license">Creative Commons Attribution</a> license.</p>
 						</section>
 					</section>
 
