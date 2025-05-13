@@ -829,5 +829,46 @@ input, select, textarea {
 				.poptrox-popup .nav-previous {
 					display: none !important;
 				}
+#main .items {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5em;
+  width: 100%;
+  margin: 2em 0;
+}
 
+#main .item {
+  width: 100% !important;
+  min-width: 0;
+  margin: 0;
+  box-shadow: 0 0 0 10px #ffffff;
+  display: block;
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+#main .item.thumb img {
+  width: 100%;
+  height: 220px;      /* Uniform height */
+  object-fit: cover;  /* Crop to fit */
+  border-radius: 8px;
+  display: block;
+  position: static;
+}
+
+#main .item.span-1 { grid-column: span 1; }
+#main .item.span-2 { grid-column: span 2; }
+#main .item.span-3 { grid-column: span 3; }
+
+#main .item.span-1,
+#main .item.span-2,
+#main .item.span-3 {
+  width: 100% !important;
+}
+
+@media (max-width: 600px) {
+  #main .item.thumb img {
+    height: 120px;
+  }
+}
 		}
