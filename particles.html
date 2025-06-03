@@ -63,17 +63,23 @@
         .toggle-btn {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 20px;
+            right: auto;
             z-index: 11;
             background: var(--primary-color);
-            color: white;
+            color: rgb(0, 204, 255);
             border: none;
-            padding: 12px;
+            width: 36px;
+            height: 36px;
+            padding: 0;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .toggle-btn:hover {
@@ -236,6 +242,8 @@
             }
 
             .toggle-btn {
+                left: 20px;
+                right: auto;
                 bottom: 20px;
                 top: auto;
             }
@@ -318,7 +326,7 @@
             
             <div class="control-group">
                 <label>Gravity: <span class="value-display" id="gravityValue">0</span></label>
-                <input type="range" id="gravity" min="-0.5" max="0.5" step="0.01" value="0">
+                <input type="range" id="gravity" min="-0.02" max="0.02" step="0.001" value="0">
             </div>
             
             <div class="control-group">
@@ -551,20 +559,20 @@
 
         // Settings
         const settings = {
-            particleCount: 100,
-            speed: 2,
-            size: 3,
+            particleCount: 420,
+            speed: 5,
+            size: 1,
             trailLength: 10,
-            color: '#6366f1',
+            color: '#00ee00',
             shape: 'circle',
-            mouseMode: 'attract',
-            interactionForce: 50,
+            mouseMode: 'attract then launch',
+            interactionForce: 150,
             interactionRadius: 100,
-            gravity: 0,
+            gravity: -0.1,
             bounceWalls: true,
             wrapAround: false,
             waterMode: false,
-            friction: 0.99,
+            friction: 1,
             audioActive: false,
             audioSensitivity: 50
         };
@@ -749,25 +757,26 @@
                     shape: 'star',
                     mouseMode: 'launch',
                     gravity: 0.1,
-                    bounceWalls: false,
+                    bounceWalls: true,
                     friction: 0.95
                 },
                 galaxy: {
-                    particleCount: 300,
+                    particleCount: 500,
                     speed: 1,
                     size: 1,
                     trailLength: 30,
                     color: '#a78bfa',
                     shape: 'circle',
                     mouseMode: 'vortex',
-                    gravity: 0,
+                    gravity: -0.05,
+                    wrapAround: true,
                     bounceWalls: false,
-                    friction: 0.999
+                    friction: 0.5
                 },
                 snow: {
-                    particleCount: 150,
+                    particleCount: 2150,
                     speed: 0.5,
-                    size: 4,
+                    size: 7,
                     trailLength: 0,
                     color: '#ffffff',
                     shape: 'circle',
@@ -780,14 +789,14 @@
                 ocean: {
                     particleCount: 100,
                     speed: 1.5,
-                    size: 3,
+                    size: 5,
                     trailLength: 15,
                     color: '#06b6d4',
                     shape: 'circle',
                     mouseMode: 'attract',
-                    gravity: 0,
+                    gravity: -0.05,
                     waterMode: true,
-                    friction: 0.98
+                    friction: 0.45
                 }
             };
 
