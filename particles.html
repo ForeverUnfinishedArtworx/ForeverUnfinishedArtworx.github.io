@@ -7,16 +7,16 @@
     <style>
         /* Brand Colors - Edit these to match your brand */
         :root {
-            --primary-color: #6366f1;
-            --secondary-color: #8b5cf6;
-            --accent-color: #06b6d4;
+            --primary-color: #00ff00;
+            --secondary-color: #ff0080;
+            --accent-color: #fff200;
             --bg-dark: #0f0f23;
-            --bg-light: #1a1a2e;
-            --text-light: #ffffff;
-            --text-dim: #9ca3af;
-            --border-color: #374151;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
+            --bg-light: #430c33;
+            --text-light: #FF0080;
+            --text-dim: #30272b;
+            --border-color: #00eeff;
+            --success-color: #00ff00;
+            --warning-color: #fff200;
         }
 
         * {
@@ -26,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'VCR OSD Mono', monospace;
             background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
             color: var(--text-light);
             overflow: hidden;
@@ -630,7 +630,16 @@
                 
             } catch (error) {
                 console.error('Error accessing microphone:', error);
-                document.getElementById('audioStatus').textContent = 'Audio Access Denied';
+                let msg = 'Audio Access Denied';
+                if (window.isSecureContext === false || location.protocol !== 'https:') {
+                    msg = 'Audio requires HTTPS. GitHub Pages supports HTTPS by default.';
+                } else if (error && (error.name === 'NotAllowedError' || error.name === 'SecurityError')) {
+                    msg = 'Microphone access was blocked. Please allow microphone access in your browser settings.';
+                } else if (error && error.name === 'NotFoundError') {
+                    msg = 'No microphone found. Please connect a microphone.';
+                }
+                document.getElementById('audioStatus').textContent = msg;
+                document.getElementById('audioStatus').className = 'audio-inactive';
             }
         }
 
