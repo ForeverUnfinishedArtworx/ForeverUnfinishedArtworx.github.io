@@ -35,8 +35,8 @@
         <a href="whitepaper.html">Whitepaper</a>
         <a href="draw.html">BombTheWalls</a>
         <a href="https://fuax-art.github.io/WTF/" class="new-page-link">The Open Book</a>
-
-  </div>
+        <span id="egg-count-display" style="margin-left:2em; color:#00ff00; font-weight:bold;"></span>
+    </div>
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBK8TBX2"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -179,12 +179,128 @@
                   <span>
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 150 118" style="enable-background:new 0 0 150 118;" xml:space="preserve">
                     <g transform="translate(0.000000,118.000000) scale(0.100000,-0.100000)">
-                      <path d="M870,1167c-34-17-55-57-46-90c3-15,81-100,194-211l187-185l-565-1c-431,0-571-3-590-13c-55-28-64-94-18-137c21-20,33-20,597-20h575l-192-193C800,103,794,94,849,39c20-20,39-29,61-29c28,0,63,30,298,262c147,144,272,271,279,282c30,51,23,60-219,304C947,1180,926,1196,870,1167z"/>
+                      <path d="M870,1167c-34-17-55-57-46-90c3-15,81-100,194-211l187-185l-565-1c-431,0-571-3-590-13c-55-28-64-94-18-137c21-20,33-20,597-20h5745l-192-193C800,103,794,94,849,39c20-20,39-29,61-29c28,0,63,30,298,262c147,144,272,271,279,282c30,51,23,60-219,304C947,1180,926,1196,870,1167z"/>
                     </g>
                     </svg>
                   </span>
                 </a>
-                <img src="assets/img/about-visual.png" alt="My Story">
+                <img src="assets/img/about-visual.png" alt="My Story" style="cursor:pointer;">
+                <!-- EASTER EGG MODAL: Hidden YouTube video and NFT claim, revealed by clicking the image above -->
+<div id="about-egg-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+  <div style="background:#222; border-radius:16px; max-width:95vw; width:600px; margin:auto; padding:2em 1em; box-shadow:0 8px 32px #000a; position:relative; display:flex; flex-direction:column; align-items:center;">
+    <button id="egg-modal-close" style="position:absolute; top:1em; right:1em; background:none; border:none; color:#fff; font-size:2em; cursor:pointer;">&times;</button>
+    <div id="egg-animation" style="margin-bottom:1em;"></div>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/ZzyENHEoQv8"
+      title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen style="border-radius:12px;"></iframe>
+    <div style="margin-top:2em; width:100%; text-align:center;">
+      <h3>Claim a Free NFT!</h3>
+      <button id="connect-wallet" style="padding:0.5em 1em; margin-bottom:1em;">Connect Wallet</button>
+      <form id="nft-claim-form" style="display:none; flex-direction:column; align-items:center;">
+        <label for="polygon-wallet" style="font-weight:bold;">Polygon Wallet Address:</label><br>
+        <input type="text" id="polygon-wallet" name="polygon-wallet" placeholder="0x..." style="width:320px;max-width:90%;padding:0.5em;margin:0.5em 0;" required>
+        <button type="submit" style="padding:0.5em 1em;">Claim NFT</button>
+      </form>
+      <div id="nft-claim-message" style="margin-top:1em;color:#4caf50;font-weight:bold;"></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+<script>
+  // Easter Egg persistent count logic
+  function updateEggCountDisplay() {
+    var count = parseInt(localStorage.getItem('eggCount') || '0', 10);
+    var display = document.getElementById('egg-count-display');
+    if (display) {
+      display.textContent = `🥚Found: ${count}`;
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var aboutImg = document.querySelector('img[alt="My Story"]');
+    var modal = document.getElementById('about-egg-modal');
+    var closeBtn = document.getElementById('egg-modal-close');
+    var eggAnimation = document.getElementById('egg-animation');
+    var connectBtn = document.getElementById('connect-wallet');
+    var nftForm = document.getElementById('nft-claim-form');
+    var nftMsg = document.getElementById('nft-claim-message');
+    var walletInput = document.getElementById('polygon-wallet');
+    var animationPlayed = false;
+    var userWallet = null;
+
+    // Show modal and animation
+    if (aboutImg && modal) {
+      aboutImg.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        if (!animationPlayed && eggAnimation) {
+          eggAnimation.innerHTML = `<svg width='120' height='120' viewBox='0 0 120 120'><circle cx='60' cy='60' r='50' fill='#fffbe6' stroke='#ffb300' stroke-width='6'><animate attributeName='r' values='50;60;50' dur='1.2s' repeatCount='2'/></circle><text x='60' y='70' text-anchor='middle' font-size='32' fill='#ffb300' font-family='monospace' font-weight='bold' opacity='0'><animate attributeName='opacity' values='0;1;1;0' keyTimes='0;0.2;0.8;1' dur='1.2s' repeatCount='2'/><tspan>🥚</tspan></text></svg>`;
+          setTimeout(function(){ eggAnimation.innerHTML = ''; }, 2400);
+          animationPlayed = true;
+        }
+        // Increment persistent egg count
+        var count = parseInt(localStorage.getItem('eggCount') || '0', 10) + 1;
+        localStorage.setItem('eggCount', count);
+        updateEggCountDisplay();
+      });
+    }
+    // Close modal
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+      // Also close when clicking outside the modal content
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
+    // Wallet connect logic
+    if (connectBtn && nftForm && walletInput) {
+      connectBtn.addEventListener('click', async function() {
+        if (window.ethereum) {
+          try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userWallet = accounts[0];
+            walletInput.value = userWallet;
+            nftForm.style.display = 'flex';
+            connectBtn.style.display = 'none';
+            nftMsg.textContent = '';
+          } catch (err) {
+            nftMsg.textContent = 'Wallet connection rejected.';
+            nftMsg.style.color = '#e53935';
+          }
+        } else {
+          nftMsg.textContent = 'MetaMask or compatible wallet not found.';
+          nftMsg.style.color = '#e53935';
+        }
+      });
+    }
+    // NFT claim form handler (real integration placeholder)
+    if (nftForm && nftMsg) {
+      nftForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var address = walletInput.value.trim();
+        if (/^0x[a-fA-F0-9]{40}$/.test(address)) {
+          nftMsg.style.color = '#4caf50';
+          nftMsg.textContent = 'Submitting to blockchain...';
+          // TODO: Replace this with your real NFT mint/airdrop logic
+          // Example: call a backend API or interact with a smart contract
+          setTimeout(function() {
+            nftMsg.textContent = 'Success! Your NFT will be airdropped soon.';
+          }, 2000);
+          nftForm.reset();
+        } else {
+          nftMsg.textContent = 'Please enter a valid Polygon wallet address.';
+          nftMsg.style.color = '#e53935';
+        }
+      });
+    }
+    updateEggCountDisplay();
+  });
+</script>
               </div>
               <div class="about--options">
                 <a href="https://foreverunfinishedartworx.printful.me/" class="new-page-link" target="_blank">
@@ -193,13 +309,13 @@
                 <a href="https://www.youtube.com/watch?v=h3rmmgqqJNs" class="new-page-link" target="_blank">
                   <h3>Be Water <br> My Friend</h3>
                 </a>
-                <a href=<a href="whitepaper.html" class="new-page-link" target="_blank">
+                <a href="whitepaper.html" class="new-page-link" target="_blank">
                   <h3>The Next Chapter</h3>
                 </a>
               </div>
             </div>
-          </li>        
-            <li class="l-section section">
+          </li>
+          <li class="l-section section">
             <div class="contact">
               <div class="contact--lockup">
                 <div class="modal">
