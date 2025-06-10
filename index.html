@@ -174,7 +174,9 @@
           <li class="l-section section">
             <div class="about">
               <div class="about--banner">
-                <h2>An open book <br> & <br>A society that doesn't read.<br></h2>
+                <!-- Add this span for the clickable dot -->
+                <span id="about-dot-easter-egg" style="display:inline-block;vertical-align:middle;width:1em;height:1em;border-radius:50%;background:#ffb300;margin-right:0.5em;cursor:pointer;box-shadow:0 0 0 2px #fff;"></span>
+                <h2 style="display:inline-block;vertical-align:middle;">An open book <br> & <br>A society that doesn't read.<br></h2>
                 <a href="parallelism/parallelismportfolio.html" class="new-page-link" target="_blank">Scratching & Clawing
                   <span>
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 150 118" style="enable-background:new 0 0 150 118;" xml:space="preserve">
@@ -216,7 +218,8 @@
     }
   }
   document.addEventListener('DOMContentLoaded', function() {
-    var aboutImg = document.querySelector('img[alt="My Story"]');
+    // Change selector to the new dot
+    var aboutDot = document.getElementById('about-dot-easter-egg');
     var modal = document.getElementById('about-egg-modal');
     var closeBtn = document.getElementById('egg-modal-close');
     var eggAnimation = document.getElementById('egg-animation');
@@ -228,8 +231,8 @@
     var userWallet = null;
 
     // Show modal and animation
-    if (aboutImg && modal) {
-      aboutImg.addEventListener('click', function() {
+    if (aboutDot && modal) {
+      aboutDot.addEventListener('click', function() {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         if (!animationPlayed && eggAnimation) {
